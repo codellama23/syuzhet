@@ -123,7 +123,7 @@ get_sentiment <- function(char_v, method = "syuzhet", path_to_tagger = NULL, cl=
     result <- unlist(lapply(word_l, get_sent_values, method, lexicon))
   } 
   else if(method == "custom"){
-    word_l <- strsplit(tolower(char_v), "[^A-Za-z']+")
+    word_l <- strsplit(tolower(char_v), perl=TRUE,"[/p{L}/p{M}*+]")
     result <- unlist(lapply(word_l, get_sent_values, method, lexicon))
   }
   else if(method == "stanford") {
