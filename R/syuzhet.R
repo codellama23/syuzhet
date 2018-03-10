@@ -105,8 +105,7 @@ get_sentiment <- function(char_v, method = "syuzhet", path_to_tagger = NULL, cl=
     char_v <- gsub("-", "", char_v) # syuzhet lexicon removes hyphens from compound words.
   }
   if(method == "afinn" || method == "bing" || method == "syuzhet"){
-    #word_l <- strsplit(tolower(char_v), "[^A-Za-z']+")
-    word_l <- strsplit(tolower(greek_sentences), perl=TRUE,"[/p{L}/p{M}*+]")
+    word_l <- strsplit(tolower(char_v), "[^A-Za-z']+")
     if(is.null(cl)){
       result <- unlist(lapply(word_l, get_sent_values, method))
     }
@@ -116,7 +115,8 @@ get_sentiment <- function(char_v, method = "syuzhet", path_to_tagger = NULL, cl=
   }
   else if(method == "nrc"){ 
     # TODO Try parallelize nrc sentiment
-    word_l <- strsplit(tolower(char_v), "[^A-Za-z']+")
+    #word_l <- strsplit(tolower(char_v), "[^A-Za-z']+")
+     word_l <- strsplit(tolower(greek_sentences), perl=TRUE,"[/p{L}/p{M}*+]")
     # lexicon <- nrc[which(nrc$lang == language & nrc$sentiment %in% c("positive", "negative")),]
     lexicon <- dplyr::filter_(nrc, ~lang == tolower(language), ~sentiment %in% c("positive", "negative"))
     lexicon[which(lexicon$sentiment == "negative"), "value"] <- -1
