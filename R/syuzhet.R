@@ -100,12 +100,13 @@ get_sentiment <- function(char_v, method = "syuzhet", path_to_tagger = NULL, cl=
   if(is.na(pmatch(method, c("syuzhet", "afinn", "bing", "nrc", "stanford", "custom")))) stop("Invalid Method")
   if(!is.character(char_v)) stop("Data must be a character vector.")
   if(!is.null(cl) && !inherits(cl, 'cluster')) stop("Invalid Cluster")
-  if(language %in% tolower(c("Arabic", "Bengali", "Chinese_simplified", "Chinese_traditional", "Greek", "Gujarati", "Hebrew", "Hindi", "Japanese", "Marathi", "Persian", "Russian", "Tamil", "Telugu", "Thai", "Ukranian", "Urdu", "Yiddish"))) stop ("Sorry, your language choice is not yet supported.")
+  if(language %in% tolower(c("Arabic", "Bengali", "Chinese_simplified", "Chinese_traditional", "Gujarati", "Hebrew", "Hindi", "Japanese", "Marathi", "Persian", "Russian", "Tamil", "Telugu", "Thai", "Ukranian", "Urdu", "Yiddish"))) stop ("Sorry, your language choice is not yet supported.")
   if(method == "syuzhet"){
     char_v <- gsub("-", "", char_v) # syuzhet lexicon removes hyphens from compound words.
   }
   if(method == "afinn" || method == "bing" || method == "syuzhet"){
-    word_l <- strsplit(tolower(char_v), "[^A-Za-z']+")
+    #word_l <- strsplit(tolower(char_v), "[^A-Za-z']+")
+    word_l <- strsplit(tolower(greek_sentences), perl=TRUE,"[/p{L}/p{M}*+]")
     if(is.null(cl)){
       result <- unlist(lapply(word_l, get_sent_values, method))
     }
